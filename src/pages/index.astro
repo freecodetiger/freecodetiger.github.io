@@ -2,15 +2,18 @@
 import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
 import About from "../components/About.astro";
+import ProGhostty from "../components/ProGhostty.astro";
 import Projects from "../components/Projects.astro";
 import Experience from "../components/Experience.astro";
+import OpenSource from "../components/OpenSource.astro";
 import Education from "../components/Education.astro";
+import Photography from "../components/Photography.astro";
 import Footer from "../components/Footer.astro";
 import { siteConfig } from "../config";
 import "../styles/global.css";
 ---
 
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -30,9 +33,12 @@ import "../styles/global.css";
     <section>
       <Hero />
       <About />
+      <ProGhostty />
       <Projects />
       <Experience />
+      <OpenSource />
       <Education />
+      <Photography />
     </section>
     <Footer />
   </body>

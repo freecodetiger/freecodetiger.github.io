@@ -126,7 +126,12 @@ const hasEducation = siteConfig.education && siteConfig.education.length > 0;
           <a
             href="#about"
             class="text-sm text-gray-600 hover:text-gray-800 transition-colors"
-            >About</a
+            >关于</a
+          >
+          <a
+            href="#proghostty"
+            class="text-sm text-gray-600 hover:text-gray-800 transition-colors"
+            >ProGhostty</a
           >
           {
             hasProjects && (
@@ -134,7 +139,7 @@ const hasEducation = siteConfig.education && siteConfig.education.length > 0;
                 href="#projects"
                 class="text-sm text-gray-600 hover:text-gray-800 transition-colors"
               >
-                Projects
+                项目
               </a>
             )
           }
@@ -144,17 +149,29 @@ const hasEducation = siteConfig.education && siteConfig.education.length > 0;
                 href="#experience"
                 class="text-sm text-gray-600 hover:text-gray-800 transition-colors"
               >
-                Experience
+                经历
               </a>
             )
           }
+          <a
+            href="#opensource"
+            class="text-sm text-gray-600 hover:text-gray-800 transition-colors"
+          >
+            开源
+          </a>
+          <a
+            href="#photography"
+            class="text-sm text-gray-600 hover:text-gray-800 transition-colors"
+          >
+            摄影
+          </a>
           {
             hasEducation && (
               <a
                 href="#education"
                 class="text-sm text-gray-600 hover:text-gray-800 transition-colors"
               >
-                Education
+                教育
               </a>
             )
           }

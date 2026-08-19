@@ -1,0 +1,65 @@
+---
+import { siteConfig } from "../config";
+import whisperIcon from "../icon/whisperkit-argmax-black@120.png";
+const os = siteConfig.openSource;
+const accent = siteConfig.accentColor;
+---
+
+<section id="opensource" class="p-8 sm:p-12 md:p-16 lg:p-24">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+    <div class="lg:col-span-4">
+      <h2 class="text-3xl sm:text-4xl md:text-5xl xl:text-7xl font-bold text-gray-900">
+        开源经历
+      </h2>
+      <div class="w-[75px] h-[5px] mt-2 rounded-full" style={`background-color: ${accent}`} />
+    </div>
+
+    <div class="lg:col-span-8">
+      <div
+        class="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8 transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+      >
+        <div class="flex items-start justify-between gap-4 flex-wrap">
+          <div class="flex items-center gap-3">
+            <img src={whisperIcon.src} alt="WhisperKit" class="h-9 w-auto object-contain" />
+            <div>
+              <h3 class="text-xl sm:text-2xl font-bold text-gray-900">{os.name}</h3>
+              <p class="text-sm text-gray-500 mt-0.5">{os.tagline}</p>
+            </div>
+          </div>
+          <a
+            href={os.prLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full font-mono text-xs sm:text-sm font-semibold text-white transition-all duration-300 hover:opacity-90"
+            style={{ backgroundColor: accent }}
+          >
+            PR #511 · 已合入 ↗
+          </a>
+        </div>
+
+        <p class="mt-6 text-base text-gray-600">{os.description}</p>
+
+        <ul class="mt-6 space-y-4">
+          {os.bullets.map((b) => (
+            <li class="flex items-start gap-3">
+              <span class="mt-2 inline-block size-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: accent }} />
+              <span class="text-sm sm:text-base text-gray-700 leading-relaxed">{b}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div class="mt-6">
+          <a
+            href={os.repoLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-sm font-semibold underline decoration-1 underline-offset-4 hover:opacity-80"
+            style={{ color: accent }}
+          >
+            源仓库 argmaxinc/argmax-oss-swift ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

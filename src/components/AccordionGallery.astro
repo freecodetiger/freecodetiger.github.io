@@ -1,0 +1,350 @@
+---
+interface Item {
+  image: string;
+  label: string;
+  alt?: string;
+  link?: string;
+}
+
+interface Props {
+  items: Item[];
+  defaultIndex?: number;
+  height?: number;
+  gap?: number;
+  radius?: number;
+  expandRatio?: number;
+  tilt?: number;
+  parallax?: number;
+  stagger?: number;
+  duration?: number;
+  grayscale?: boolean;
+  showLabels?: boolean;
+  accentColor?: string;
+  overlayColor?: string;
+  textColor?: string;
+}
+
+const {
+  items,
+  defaultIndex = 0,
+  height = 460,
+  gap = 10,
+  radius = 16,
+  expandRatio = 0.52,
+  tilt = 8,
+  parallax = 0.5,
+  stagger = 0.06,
+  duration = 0.6,
+  grayscale = true,
+  showLabels = true,
+  accentColor = "#ffffff",
+  overlayColor = "#0a0713",
+  textColor = "#ffffff",
+} = Astro.props;
+
+const count = items.length;
+const initial = Math.min(Math.max(defaultIndex, 0), count - 1);
+---
+
+<div
+  class="ag-root"
+  data-ag
+  data-active={initial}
+  data-expand={expandRatio}
+  data-tilt={tilt}
+  data-parallax={parallax}
+  data-stagger={stagger}
+  data-duration={duration}
+  data-grayscale={grayscale}
+  data-labels={showLabels}
+  style={`gap: ${gap}px; height: ${height}px; --ag-accent: ${accentColor}; --ag-overlay: ${overlayColor}; --ag-text: ${textColor}`}
+  role="list"
+  aria-label="摄影画廊"
+>
+  {items.map((item, i) => {
+    const Tag = item.link ? "a" : "div";
+    return (
+      <Tag
+        class="ag-panel"
+        data-panel
+        href={item.link || undefined}
+        role="listitem"
+        tabindex={0}
+        aria-current={i === initial ? "true" : "false"}
+        aria-label={item.label}
+        style={`border-radius: ${radius}px`}
+      >
+        <span class="ag-media-wrap">
+          <span class="ag-media" data-media>
+            <img src={item.image} alt={item.alt || item.label} draggable="false" loading="lazy" decoding="async" />
+          </span>
+          <span class="ag-overlay"></span>
+        </span>
+        {
+          showLabels && (
+            <span class="ag-label">
+              <span class="ag-bar" data-bar></span>
+              <span class="ag-text" data-text>{item.label}</span>
+            </span>
+          )
+        }
+      </Tag>
+    );
+  })}
+</div>
+
+<style>
+  .ag-root {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    perspective: 1400px;
+  }
+
+  .ag-panel {
+    position: relative;
+    display: block;
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    cursor: pointer;
+    background: #0a0713;
+    outline: none;
+    transform-style: preserve-3d;
+    transform-origin: center;
+    box-shadow: 0 10px 30px -18px rgba(0, 0, 0, 0.8);
+    will-change: flex-grow, transform;
+  }
+
+  .ag-panel:focus-visible {
+    box-shadow:
+      0 0 0 2px var(--ag-accent),
+      0 10px 30px -18px rgba(0, 0, 0, 0.8);
+  }
+
+  .ag-media-wrap {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .ag-media {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--ag-media-size, 320px);
+    height: 100%;
+    transform: translate(-50%, -50%);
+    filter: grayscale(var(--ag-gray, 1));
+    will-change: transform, filter;
+  }
+
+  .ag-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .ag-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(
+        180deg,
+        transparent 45%,
+        color-mix(in srgb, var(--ag-overlay) 78%, transparent) 100%
+      ),
+      color-mix(in srgb, var(--ag-overlay) calc(var(--ag-dim, 0.35) * 100%), transparent);
+  }
+
+  .ag-label {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    pointer-events: none;
+  }
+
+  .ag-bar {
+    flex: none;
+    width: 3px;
+    height: 26px;
+    border-radius: 3px;
+    background: var(--ag-accent);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--ag-accent) 60%, transparent);
+    opacity: 0;
+  }
+
+  .ag-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: clamp(1rem, 1.4vw, 1.4rem);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--ag-text);
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55);
+    opacity: 0;
+  }
+
+  @media (max-width: 520px) {
+    .ag-root {
+      flex-direction: column;
+      height: auto !important;
+      perspective: none;
+    }
+
+    .ag-panel {
+      flex: none;
+      height: 120px;
+      transform: none;
+    }
+
+    .ag-media {
+      width: 100%;
+      height: 100%;
+    }
+
+    .ag-bar,
+    .ag-text {
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+
+  document.querySelectorAll("[data-ag]").forEach((root) => {
+    const panels = Array.from(root.querySelectorAll("[data-panel]"));
+    const mediaEls = panels.map((p) => p.querySelector("[data-media]"));
+    const bars = panels.map((p) => p.querySelector("[data-bar]"));
+    const texts = panels.map((p) => p.querySelector("[data-text]"));
+    const count = panels.length;
+    if (!count) return;
+
+    const expandRatio = parseFloat(root.dataset.expand || "0.52");
+    const tilt = parseFloat(root.dataset.tilt || "8");
+    const parallax = parseFloat(root.dataset.parallax || "0.5");
+    const stagger = parseFloat(root.dataset.stagger || "0.06");
+    const duration = parseFloat(root.dataset.duration || "0.6");
+    const ease = "power3.out";
+    const grayscale = (root.dataset.grayscale || "true") === "true";
+    const showLabels = (root.dataset.labels || "true") === "true";
+    const gap = parseFloat(getComputedStyle(root).gap || "10");
+
+    let active = parseInt(root.dataset.active || "0", 10);
+    let tl = null;
+    let mediaSize = 320;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function setActive(i) {
+      active = i;
+      root.dataset.active = String(i);
+      panels.forEach((p, idx) => p.setAttribute("aria-current", idx === i ? "true" : "false"));
+      applyLayout(true);
+    }
+
+    function applyLayout(animate) {
+      tl && tl.kill();
+      const dur = animate && !reduced ? duration : 0;
+
+      if (root.clientWidth <= 520) {
+        panels.forEach((panel, i) => {
+          const media = mediaEls[i];
+          panel.style.transform = "none";
+          if (media) {
+            media.style.width = "100%";
+            media.style.height = "100%";
+            media.style.transform = "none";
+            media.style.filter = "grayscale(0)";
+          }
+          if (bars[i]) bars[i].style.opacity = "1";
+          if (texts[i]) texts[i].style.opacity = "1";
+        });
+        return;
+      }
+
+      const r = Math.min(Math.max(expandRatio, 0.2), 0.9);
+      const grow = count > 1 ? (r * (count - 1)) / (1 - r) : 1;
+      tl = gsap.timeline();
+
+      panels.forEach((panel, i) => {
+        const isActive = i === active;
+        const rot = isActive ? 0 : i < active ? -tilt : tilt;
+        tl.to(panel, { flexGrow: isActive ? grow : 1, rotateY: rot, duration: dur, ease }, 0);
+
+        const media = mediaEls[i];
+        if (media) {
+          const drift = Math.max(-1.5, Math.min(1.5, active - i));
+          const shift = drift * parallax * mediaSize * 0.06;
+          tl.to(
+            media,
+            {
+              xPercent: -50,
+              yPercent: -50,
+              x: isActive ? 0 : shift,
+              y: 0,
+              "--ag-gray": grayscale ? (isActive ? 0 : 1) : 0,
+              "--ag-dim": isActive ? 0 : 0.35,
+              duration: dur,
+              ease,
+            },
+            0
+          );
+        }
+
+        if (showLabels && bars[i] && texts[i]) {
+          if (isActive) {
+            tl.to([bars[i], texts[i]], { opacity: 1, x: 0, duration: dur, ease, stagger: reduced ? 0 : stagger }, 0);
+          } else {
+            tl.to([bars[i], texts[i]], { opacity: 0, x: -14, duration: dur * 0.6, ease }, 0);
+          }
+        }
+      });
+    }
+
+    function measure() {
+      const rect = root.getBoundingClientRect();
+      const usable = Math.max(rect.width - gap * (count - 1), 120);
+      const size = Math.max(140, usable * Math.min(Math.max(expandRatio, 0.2), 0.9) * 1.22);
+      mediaSize = size;
+      root.style.setProperty("--ag-media-size", `${size}px`);
+      applyLayout(false);
+    }
+
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(root);
+
+    panels.forEach((p, i) => {
+      p.addEventListener("mouseenter", () => active !== i && setActive(i));
+      p.addEventListener("click", (e) => {
+        if (active !== i) e.preventDefault();
+        setActive(i);
+      });
+      p.addEventListener("focus", () => setActive(i));
+      p.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+          e.preventDefault();
+          setActive((i + 1) % count);
+        } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+          e.preventDefault();
+          setActive((i - 1 + count) % count);
+        }
+      });
+    });
+
+    // 初始动画一次（跳过首帧测量时的静默布局）
+    requestAnimationFrame(() => applyLayout(true));
+  });
+</script>
