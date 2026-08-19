@@ -6,6 +6,7 @@ export const siteConfig = {
   social: {
     email: "2388387947@qq.com",
     github: "https://github.com/freecodetiger",
+    douyin: "https://www.douyin.com/user/MS4wLjABAAAAMxajoknnDSz8fgoiREjZ90c41uHb7cX2Cc_UyS29sahIpcIMmKc8O1PmKr1Bqtpe?from_tab_name=main",
   },
   aboutMe:
     "软件工程师，武汉大学软件工程在读，目前在影石 Insta360 剪辑 SDK 组做移动端工程。比起满足于用 API，我更想搞清楚 API 之下发生了什么——从界面、框架、运行时一路摸到系统层；也相信技术复杂度应该消失在体验里。写过 macOS 终端、语音剪辑、本地优先的 AI 助手，也给 WhisperKit 修过中文时间戳的 bug。",
