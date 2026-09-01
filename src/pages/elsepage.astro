@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { siteConfig } from "../config";
+import { Image } from "astro:assets";
+import elsePageScreenshot from "../assets/elsepage-app.png";
 
 const project = siteConfig.elsepage;
 const accent = siteConfig.accentColor;
@@ -80,6 +82,64 @@ const capabilityDetails = [
         </div>
         <div class="lg:col-span-4 lg:text-right">
           <a href={project.repo} target="_blank" rel="noopener noreferrer" class="inline-flex rounded-lg px-5 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:shadow-lg" style={{ backgroundColor: accent }}>查看公开源码 ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="px-8 pb-20 pt-0 sm:px-12 md:px-16 md:pb-28 lg:px-24">
+    <div class="mx-auto max-w-7xl overflow-hidden rounded-[2rem] bg-gray-950 text-white">
+      <div class="grid lg:grid-cols-12">
+        <div class="p-8 sm:p-12 lg:col-span-5 lg:p-14">
+          <div class="flex items-center gap-3">
+            <span class="size-2 rounded-full bg-emerald-400 shadow-[0_0_18px_rgba(52,211,153,0.8)]"></span>
+            <p class="font-mono text-xs font-bold tracking-[0.18em] text-gray-400">REAL PRODUCT · iOS</p>
+          </div>
+          <h2 class="mt-6 text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">真实产品，<br />不是概念图。</h2>
+          <p class="mt-6 text-sm leading-relaxed text-gray-400 sm:text-base">这张思想时间线来自 ElsePage 的实际运行界面。用户可以按时间、书籍或日志回看自己的思考，也能看到哪些内容获得过 Agent 回应、建立过历史连接或进入过讨论。</p>
+
+          <div class="mt-9 space-y-3">
+            <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+              <p class="font-mono text-[10px] font-bold tracking-[0.16em] text-blue-400">01 / SEARCH & FILTER</p>
+              <p class="mt-2 text-sm text-gray-300">思想、书名与回应统一检索，并按时间、书籍和日志切换视角。</p>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+              <p class="font-mono text-[10px] font-bold tracking-[0.16em] text-blue-400">02 / RESPONSE STATE</p>
+              <p class="mt-2 text-sm text-gray-300">卡片直接呈现是否有回应、历史连接与讨论次数。</p>
+            </div>
+            <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+              <p class="font-mono text-[10px] font-bold tracking-[0.16em] text-blue-400">03 / THOUGHT TIMELINE</p>
+              <p class="mt-2 text-sm text-gray-300">用户原话按时间沉淀，Agent 关系不会覆盖最初的思考。</p>
+            </div>
+          </div>
+
+          <p class="mt-8 text-xs leading-relaxed text-gray-600">截图来自开发构建；界面与数据仍在持续迭代。</p>
+        </div>
+
+        <div class="relative flex min-h-[620px] items-center justify-center overflow-hidden border-t border-white/10 bg-[radial-gradient(circle_at_50%_30%,rgba(37,99,235,0.26),transparent_58%)] p-8 sm:p-12 lg:col-span-7 lg:min-h-[760px] lg:border-l lg:border-t-0">
+          <div class="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:48px_48px]"></div>
+          <div class="absolute left-8 top-8 font-mono text-[10px] tracking-[0.16em] text-gray-600">LIVE INTERFACE / 2026</div>
+
+          <figure class="relative z-10 w-full max-w-[300px] lg:max-w-[320px]">
+            <div class="rounded-[2.8rem] border-[7px] border-black bg-black p-1 shadow-[0_40px_100px_rgba(0,0,0,0.55)]">
+              <div class="overflow-hidden rounded-[2.2rem] bg-[#f5f5f1]">
+                <Image
+                  src={elsePageScreenshot}
+                  alt="ElsePage iOS 真实应用的思想时间线完整截图"
+                  width={640}
+                  height={1392}
+                  format="webp"
+                  quality={86}
+                  class="block h-auto w-full"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <figcaption class="mt-4 text-center font-mono text-[10px] font-bold tracking-[0.14em] text-gray-500">THOUGHTS TIMELINE · ACTUAL BUILD</figcaption>
+          </figure>
+
+          <div class="absolute right-8 top-28 hidden rounded-xl border border-white/10 bg-gray-950/85 px-3 py-2 text-[10px] font-semibold text-gray-300 backdrop-blur xl:block">Searchable reflections</div>
+          <div class="absolute bottom-36 left-8 hidden rounded-xl border border-white/10 bg-gray-950/85 px-3 py-2 text-[10px] font-semibold text-gray-300 backdrop-blur xl:block">Evidence of response</div>
         </div>
       </div>
     </div>

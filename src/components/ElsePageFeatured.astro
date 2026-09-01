@@ -1,5 +1,7 @@
 ---
 import { siteConfig } from "../config";
+import { Image } from "astro:assets";
+import elsePageScreenshot from "../assets/elsepage-app.png";
 const project = siteConfig.elsepage;
 const accent = siteConfig.accentColor;
 ---
@@ -38,30 +40,68 @@ const accent = siteConfig.accentColor;
       </div>
 
       <div class="lg:col-span-7">
-        <div class="rounded-2xl border border-gray-200 bg-gray-50 p-5 sm:p-7">
-          <p class="text-xs font-bold tracking-[0.18em] text-gray-500">PRODUCT LOOP</p>
-          <div class="mt-5 grid grid-cols-5 items-center gap-1 sm:gap-2">
-            {project.loop.map((step, index) => (
-              <div class="relative min-w-0 text-center">
-                <div class:list={["flex h-16 items-center justify-center rounded-xl border px-1 text-[10px] font-bold sm:text-xs", index === 2 ? "border-blue-700 bg-blue-700 text-white" : "border-gray-300 bg-white text-gray-700"]}>
-                  {step}
-                </div>
-                {index < project.loop.length - 1 && (
-                  <span class="absolute -right-2 top-1/2 z-10 -translate-y-1/2 bg-gray-50 px-0.5 text-xs text-gray-400 sm:-right-3">→</span>
-                )}
+        <div class="grid gap-5 sm:grid-cols-[minmax(0,1fr)_190px] lg:grid-cols-[minmax(0,1fr)_210px]">
+          <div>
+            <div class="rounded-2xl border border-gray-200 bg-gray-50 p-5 sm:p-7">
+              <p class="text-xs font-bold tracking-[0.18em] text-gray-500">PRODUCT LOOP</p>
+              <div class="mt-5 space-y-2" data-product-loop>
+                {project.loop.map((step, index) => (
+                  <div class="relative flex min-w-0 items-center gap-3" data-loop-step>
+                    <span class:list={["relative z-10 flex size-7 shrink-0 items-center justify-center rounded-full border font-mono text-[9px] font-bold", index === 2 ? "border-blue-700 bg-blue-700 text-white" : "border-gray-300 bg-white text-gray-500"]}>
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <div class:list={["flex min-h-11 min-w-0 flex-1 items-center justify-between gap-3 rounded-xl border px-3 text-xs font-bold", index === 2 ? "border-blue-700 bg-blue-700 text-white" : "border-gray-300 bg-white text-gray-700"]}>
+                      <span data-loop-label>{step}</span>
+                      {index === 2 && <span class="font-mono text-[9px] tracking-[0.12em] text-blue-200">AGENT</span>}
+                    </div>
+                    {index < project.loop.length - 1 && (
+                      <span class="absolute left-[13px] top-full h-2 border-l border-dashed border-gray-300"></span>
+                    )}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <p class="mt-4 text-xs leading-relaxed text-gray-500">用户原话优先保存；Agent 只在被邀请时介入，回应与长期记忆都保留证据和修订路径。</p>
-        </div>
-
-        <div class="mt-4 grid grid-cols-3 gap-3">
-          {project.facts.map((fact) => (
-            <div class="rounded-2xl border border-gray-200 bg-white p-4">
-              <p class="text-xl font-bold text-gray-900 sm:text-2xl">{fact.value}</p>
-              <p class="mt-1 text-[10px] leading-relaxed text-gray-500 sm:text-xs">{fact.label}</p>
+              <p class="mt-4 text-xs leading-relaxed text-gray-500">用户原话优先保存；Agent 只在被邀请时介入，回应与长期记忆都保留证据和修订路径。</p>
             </div>
-          ))}
+
+            <div class="mt-4 space-y-2">
+              {project.facts.map((fact) => (
+                <div class="flex min-h-14 items-center justify-between gap-4 rounded-xl border border-gray-200 bg-white px-4 py-3">
+                  <p class="shrink-0 font-mono text-xl font-bold text-gray-900 sm:text-2xl">{fact.value}</p>
+                  <p class="text-right text-[10px] leading-relaxed text-gray-500 sm:text-xs">{fact.label}</p>
+                </div>
+              ))}
+            </div>
+
+          </div>
+
+          <div class="order-first mx-auto w-full max-w-[220px] self-start sm:order-last">
+            <figure>
+              <div class="relative rounded-[2rem] border-[5px] border-gray-950 bg-gray-950 p-0.5 shadow-2xl shadow-gray-900/25">
+                <div class="overflow-hidden rounded-[1.55rem] bg-[#f5f5f1]">
+                  <Image
+                    src={elsePageScreenshot}
+                    alt="ElsePage iOS 真实应用的思想时间线界面"
+                    width={420}
+                    height={913}
+                    format="webp"
+                    quality={84}
+                    class="block h-auto w-full"
+                    loading="lazy"
+                  />
+                </div>
+                <span class="absolute -right-2 top-16 size-1 rounded-full bg-blue-600 shadow-[0_0_16px_rgba(37,99,235,0.9)]"></span>
+              </div>
+              <figcaption class="mt-3 text-center font-mono text-[10px] font-bold tracking-[0.14em] text-gray-400">REAL PRODUCT · iOS</figcaption>
+            </figure>
+
+            <div class="mt-4 rounded-2xl border border-gray-200 bg-white p-4">
+              <p class="flex items-center gap-2 font-mono text-[10px] font-bold tracking-[0.16em] text-gray-500">
+                <span class="size-2 rounded-full bg-emerald-500"></span>
+                REAL APP INTERFACE
+              </p>
+              <p class="mt-2 text-xs leading-relaxed text-gray-500">真实 iOS 运行界面：思想时间线、检索筛选、回应状态与历史连接。</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
