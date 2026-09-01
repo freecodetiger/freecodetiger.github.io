@@ -1,0 +1,24 @@
+---
+import { siteConfig } from "../config";
+import "../styles/global.css";
+const pageTitle = `${siteConfig.name}｜Agent / AI 应用开发简历`;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={`${siteConfig.name}的 Agent / AI 应用开发公开简历`} />
+    <link rel="canonical" href="https://freecodetiger.github.io/resume/" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{pageTitle}</title>
+  </head>
+  <body class="m-0 overflow-hidden bg-gray-200">
+    <iframe
+      src="/resume/document.html"
+      title={`${siteConfig.name}的 Agent / AI 应用开发简历`}
+      class="h-screen w-full border-0"
+    ></iframe>
+  </body>
+</html>

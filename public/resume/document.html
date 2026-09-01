@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>张鹏程｜Agent / AI 应用开发简历</title>
+  <style>
+    :root {
+      --accent: #1a5fb4;
+      --icon: #6b7280;
+      --bg: #e5e7eb;
+      --text: #1f2937;
+      --muted: #4b5563;
+      --line: #d1d5db;
+      --page-width: 210mm;
+      --page-height: 297mm;
+      --page-gap: 32px;
+      --page-scale: 1;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "PingFang SC", "PingFang TC", "PingFang HK", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+      font-weight: 500;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    b,
+    strong {
+      font-weight: 800;
+      font-size: 1.04em;
+      color: #111827;
+    }
+
+    .app {
+      min-height: 100vh;
+      padding: 32px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .toolbar {
+      width: min(var(--page-width), 100%);
+      margin-bottom: 24px;
+      padding: 0 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .toolbar-note {
+      color: #6b7280;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toolbar-btn {
+      border: 0;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+      padding: 11px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(0, 82, 217, 0.18);
+    }
+
+    .toolbar-btn:hover {
+      background: #0040a8;
+    }
+
+    .toolbar-home {
+      color: #4b5563;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .toolbar-home:hover {
+      color: var(--accent);
+    }
+
+    .resume-stack {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--page-gap);
+      padding-bottom: 32px;
+    }
+
+    .page-shell {
+      width: min(calc(100vw - 24px), calc(var(--page-width) * 3.7795275591));
+      height: calc(var(--page-height) * 3.7795275591 * var(--page-scale));
+      display: flex;
+      justify-content: center;
+      overflow: visible;
+    }
+
+    .page {
+      width: var(--page-width);
+      height: var(--page-height);
+      background: #fff;
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.16);
+      overflow: hidden;
+      position: relative;
+      transform-origin: top center;
+      transform: scale(var(--page-scale));
+      flex-shrink: 0;
+    }
+
+    .page.page-1 {
+      padding: 5mm 13mm 3mm;
+    }
+
+    .page.page-2 {
+      padding: 20mm 15mm 10mm;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-2 .project-note,
+    .page-2 ul,
+    .page-2 .cross-skill {
+      line-height: 1.5;
+    }
+
+    .top-row {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .top-row::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    .main-column {
+      min-width: 0;
+    }
+
+    .photo-column {
+      float: right;
+      width: 31mm;
+      margin-left: 8mm;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .header {
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 7px;
+      overflow: hidden;
+    }
+
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .name {
+      margin: 0 0 7px;
+      font-size: 31px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      color: #111827;
+    }
+
+    .job-target {
+      margin: 0;
+      color: var(--accent);
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+    }
+
+    .contact-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px 14px;
+      align-items: center;
+      margin-top: 6px;
+      color: #4b5563;
+      font-size: 12.5px;
+    }
+
+    .contact-item,
+    .section-title,
+    .award-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .contact-item span {
+      font-weight: 650;
+    }
+
+    .icon {
+      width: 13px;
+      height: 13px;
+      color: var(--icon);
+      flex: 0 0 auto;
+    }
+
+    .section-icon {
+      width: 17px;
+      height: 17px;
+      color: var(--icon);
+      flex: 0 0 auto;
+    }
+
+    .award-icon {
+      width: 15px;
+      height: 15px;
+      flex: 0 0 auto;
+    }
+
+    .award-icon.orange {
+      color: #f97316;
+    }
+
+    .award-icon.gold {
+      color: #ca8a04;
+    }
+
+    .award-icon.blue {
+      color: var(--accent);
+    }
+
+    .award-icon.gray {
+      color: #4b5563;
+    }
+
+    .photo-frame {
+      width: 30mm;
+      height: 40mm;
+      margin-top: 2px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.12);
+      background: #f9fafb;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    section {
+      margin: 0;
+    }
+
+    .section-compact {
+      margin-bottom: 5px;
+    }
+
+    .skills-inline {
+      margin-top: 3px;
+      margin-bottom: 0;
+    }
+
+    .name-row {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .name-edu {
+      font-size: 15px;
+      font-weight: 900;
+      color: #111827;
+    }
+
+    .name-edu-icon {
+      width: 16px;
+      height: 16px;
+      color: var(--icon);
+      margin-right: 5px;
+      vertical-align: -2px;
+    }
+
+    .name-edu-date {
+      margin-left: 10px;
+      color: var(--accent);
+      font-weight: 900;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 2px;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      flex: 1;
+      font-size: 16px;
+      font-weight: 900;
+      color: #111827;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 2px;
+    }
+
+    .row-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 1px;
+    }
+
+    .row-between.end {
+      align-items: flex-end;
+    }
+
+    .row-between h3,
+    .project-title {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 900;
+      color: #111827;
+    }
+
+    .project-title {
+      font-size: 14.5px;
+      color: #111827;
+    }
+
+    .brand-logo {
+      height: 15px;
+      width: auto;
+      margin-right: 6px;
+      vertical-align: -2px;
+      border-radius: 2px;
+    }
+
+    .header-logo {
+      height: 15px;
+      margin-right: 0;
+      margin-left: 8px;
+      vertical-align: middle;
+      flex: 0 0 auto;
+      border-radius: 2px;
+    }
+
+    .header-logo.square {
+      height: 20px;
+    }
+
+    .header-logo.proghostty {
+      height: 24px;
+    }
+
+    .header-logo.elsepage {
+      height: 24px;
+    }
+
+    .date,
+    .project-side {
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .edu-subtitle,
+    .intro-note,
+    .project-note {
+      margin: 0 0 4px;
+      color: var(--accent);
+      font-size: 12.5px;
+      font-weight: 650;
+      border-left: 2px solid var(--accent);
+      padding-left: 8px;
+      line-height: 1.35;
+    }
+
+    .edu-subtitle {
+      color: #374151;
+      border-left: 0;
+      padding-left: 0;
+      font-size: 13px;
+      font-weight: 650;
+      margin-bottom: 4px;
+    }
+
+    .course-text,
+    .small-text,
+    ul {
+      font-size: 12.25px;
+      font-weight: 400;
+      color: #000000;
+      line-height: 1.35;
+    }
+
+    .course-text {
+      margin: 0;
+      font-size: 12.25px;
+      color: #000000;
+    }
+
+    .course-score {
+      font-weight: 800;
+      font-size: inherit;
+      color: #111827;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 19px;
+    }
+
+    li + li {
+      margin-top: 1px;
+    }
+
+    .project-summary + .compact-list li + li {
+      margin-top: 3px;
+    }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.95em;
+    }
+
+    .project-block {
+      margin-bottom: 7px;
+    }
+
+    .skills-grid {
+      font-size: 12.25px;
+      line-height: 1.34;
+      color: #000000;
+      font-weight: 400;
+    }
+
+    .skill-item {
+      margin: 0 0 2px;
+    }
+
+    .skill-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .skill-item strong {
+      color: var(--accent);
+      font-size: 1.04em;
+    }
+
+    .compact-list {
+      padding-left: 18px;
+    }
+
+    .compact-list li::marker {
+      color: var(--icon);
+    }
+
+    .compact-list li b,
+    .compact-list li strong {
+      font-weight: 700;
+      font-size: 1em;
+    }
+
+    .compact-list li b.bt {
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 1.04em;
+    }
+
+    .resume-link {
+      color: var(--accent);
+      font-weight: 800;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(26, 95, 180, 0.35);
+    }
+
+    .gh-icon {
+      width: 11px;
+      height: 11px;
+      margin-right: 3px;
+      vertical-align: -1px;
+      color: var(--icon);
+    }
+
+    .gh-icon.dy-icon {
+      width: 9.5px;
+      height: 9.5px;
+      vertical-align: -0.5px;
+    }
+
+    .project-summary {
+      margin: 1px 0 2px;
+      color: #4b5563;
+      font-size: 12.1px;
+      line-height: 1.4;
+    }
+
+    .page-2 section:first-child {
+      margin-bottom: 18px;
+    }
+
+    .awards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px 0;
+      margin-left: 4px;
+      font-size: 13px;
+      color: #1f2937;
+    }
+
+    .award-item.right {
+      padding-left: 24px;
+    }
+
+    .nowrap {
+      white-space: nowrap;
+    }
+
+    .cross-skill {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid #e5e7eb;
+      font-size: 13px;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+
+    .hidden-sprite {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+    }
+
+    @media (max-width: 860px) {
+      .app {
+        padding: 20px 8px;
+      }
+
+      .toolbar {
+        width: calc(100vw - 16px);
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .toolbar-actions {
+        justify-content: flex-end;
+      }
+    }
+
+    @media print {
+      :root {
+        --page-scale: 1 !important;
+      }
+
+      @page {
+        margin: 0;
+        size: A4 portrait;
+      }
+
+      body {
+        background: #fff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .app {
+        padding: 0;
+      }
+
+      .toolbar {
+        display: none;
+      }
+
+      .resume-stack {
+        gap: 0;
+        padding-bottom: 0;
+        display: block;
+      }
+
+      .page-shell {
+        display: block;
+        width: var(--page-width);
+        height: var(--page-height) !important;
+        --page-scale: 1 !important;
+        break-after: page;
+        page-break-after: always;
+      }
+
+      .page-shell:last-child {
+        page-break-after: auto;
+      }
+
+      .page {
+        box-shadow: none;
+      }
+
+      .photo-frame {
+        border: 1px solid #fff;
+        background: #fff;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <svg class="hidden-sprite" aria-hidden="true" focusable="false">
+    <symbol id="icon-phone" viewBox="0 0 24 24">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.08 4.18 2 2 0 0 1 4.06 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.78.63 2.62a2 2 0 0 1-.45 2.11L8 9.91a16 16 0 0 0 6.09 6.09l1.46-1.24a2 2 0 0 1 2.11-.45c.84.3 1.72.51 2.62.63A2 2 0 0 1 22 16.92z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-mail" viewBox="0 0 24 24">
+      <rect x="3" y="5" width="18" height="14" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="m3 7 9 6 9-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-map-pin" viewBox="0 0 24 24">
+      <path d="M12 21s-6-5.33-6-11a6 6 0 1 1 12 0c0 5.67-6 11-6 11z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="12" cy="10" r="2.5" fill="none" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    <symbol id="icon-grad" viewBox="0 0 24 24">
+      <path d="m22 10-10-5L2 10l10 5 10-5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M6 12v5c3 2 9 2 12 0v-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-briefcase" viewBox="0 0 24 24">
+      <rect x="3" y="7" width="18" height="13" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M3 12h18" fill="none" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    <symbol id="icon-code" viewBox="0 0 24 24">
+      <path d="m16 18 6-6-6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="m8 6-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-trophy" viewBox="0 0 24 24">
+      <path d="M8 21h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M12 17v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M7 4h10v4a5 5 0 0 1-10 0V4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M17 5h3v2a4 4 0 0 1-4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M7 5H4v2a4 4 0 0 0 4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-github" viewBox="0 0 16 16">
+      <path fill="currentColor" fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-2.65-.89-2.65-2.86 0-.63.22-1.16.59-1.57-.04-.1-.26-.7.06-1.46 0 0 .59-.19 1.94.74.56-.16 1.16-.24 1.76-.24.6 0 1.2.08 1.76.24 1.35-.94 1.94-.74 1.94-.74.32.76.1 1.36.06 1.46.37.41.59.93.59 1.57 0 1.98-.87 2.66-2.65 2.86.28.24.53.71.53 1.44 0 1.04-.01 1.89-.01 2.15 0 .21.15.46.55.38A7.995 7.995 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+    </symbol>
+    <symbol id="icon-douyin" viewBox="0 0 448 512">
+      <path fill="currentColor" d="M448 209.91a210.06 210.06 0 0 1-122.77-39.25v178.72A162.55 162.55 0 1 1 185 188.31v89.89a74.62 74.62 0 1 0 52.23 71.18V0h88a121.18 121.18 0 0 0 1.86 22.17A122.18 122.18 0 0 0 381 102.39a121.43 121.43 0 0 0 67 20.14z"/>
+    </symbol>
+    <symbol id="icon-award" viewBox="0 0 24 24">
+      <circle cx="12" cy="8" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="m8.5 14.5-2 6 5.5-3 5.5 3-2-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-printer" viewBox="0 0 24 24">
+      <path d="M6 9V3h12v6" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <rect x="6" y="14" width="12" height="7" fill="none" stroke="currentColor" stroke-width="2"/>
+      <rect x="3" y="9" width="18" height="8" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+  </svg>
+
+  <div class="app">
+    <div class="toolbar">
+      <span class="toolbar-note">Agent / AI 应用方向 · 单页简历预览</span>
+      <div class="toolbar-actions">
+        <a class="toolbar-home" href="/">← 返回个人网站</a>
+        <button class="toolbar-btn" type="button" id="print-btn">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-printer"></use></svg>
+          打印 / 导出 PDF
+        </button>
+      </div>
+    </div>
+
+    <div class="resume-stack" id="resume-stack">
+      <div class="page-shell">
+        <div class="page page-1">
+          <div class="top-row">
+            <div class="photo-column">
+              <div class="photo-frame">
+                <img src="2CEB3C1CC1B858336BEC35F8D8BB5D7D.png" alt="张鹏程证件照" onerror="this.style.visibility='hidden';" />
+              </div>
+            </div>
+            <div class="main-column">
+              <header class="header">
+                <div>
+                  <div class="name-row">
+                    <h1 class="name">张鹏程</h1>
+                    <span class="name-edu"><svg class="icon name-edu-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-grad"></use></svg>武汉大学 · 软件工程（本科）<span class="name-edu-date">2023.08 - 2027.06</span></span>
+                  </div>
+                  <p class="job-target">求职意向：Agent 开发 / AI 应用开发</p>
+                </div>
+                <div class="contact-list">
+                  <div class="contact-item">
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-mail"></use></svg>
+                    <span>2388387947@qq.com</span>
+                  </div>
+                  <div class="contact-item">
+                    <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-github"></use></svg>
+                    <a class="resume-link" href="https://github.com/freecodetiger">github.com/freecodetiger</a>
+                  </div>
+                </div>
+              </header>
+
+              <section class="section-compact skills-inline">
+                <div class="section-header">
+                  <svg class="section-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-code"></use></svg>
+                  <h2>专业技能</h2>
+                </div>
+                <div class="skills-grid">
+                  <p class="skill-item"><strong>Agent / AI：</strong> Context Engineering · RAG · Long-term Memory · Tool / Function Calling · MCP · Structured Output · Agent Runtime / Routing / Fallback　<strong>Engineering：</strong> Python · Java · C++ · Swift / Kotlin · MySQL / Redis / RabbitMQ/SQLite · Docker · Git / CI · Async / Networking  / Testing</p>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <section>
+            <div class="section-header">
+              <svg class="section-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-briefcase"></use></svg>
+              <h2>实习经历<img class="brand-logo header-logo" src="assets/insta360-logo@600.png" alt="影石 Insta360" /></h2>
+            </div>
+
+            <div class="project-block" style="margin-bottom: 4px;">
+              <div class="row-between end">
+                <h3 class="project-title">影石创新 Insta360 · 技术中心 - 剪辑 SDK 组｜移动端开发暑期实习</h3>
+                <span class="project-side">2026.06 - 至今</span>
+              </div>
+            </div>
+
+            <div class="project-block" style="margin-bottom: 5px;">
+              <div class="row-between end">
+                <h3 class="project-title">一键成片 AI 助手 · Agent 工具接入与可靠性治理</h3>
+                <span class="project-side">稳定分支交付</span>
+              </div>
+              <ul class="compact-list">
+                <li><b class="bt">Agent 工具体系：</b>为 iOS 端 LLM Agent 独立交付换模板、批量删段、对话可视化等工具；梳理“<b>Tool = LLM 视角的意图，func = 端口原子能力</b>”边界，以 schema 作为工具单一真相源，消除 prompt 声明与真实实现漂移导致的幻觉调用。</li>
+                <li><b class="bt">异步可靠性：</b>针对下载失败、用户取消、后台中断等分支不回调导致 Agent 永久挂起的问题，在引擎边界建立“<b>必定回调且仅回调一次</b>”契约 + 软超时兜底，8 个单测覆盖成功/失败/取消/中断及双触发、零触发路径。</li>
+              </ul>
+            </div>
+
+            <div class="project-block" style="margin-bottom: 5px;">
+              <div class="row-between end">
+                <h3 class="project-title">AI Harness 工程实践 · 跨仓 AI 工作空间与 MR 评审门禁</h3>
+                <span class="project-side">参与演进 · 已成为项目门禁</span>
+              </div>
+              <ul class="compact-list">
+                <li><b class="bt">AI 工程化：</b>参与团队跨仓 AI 工作空间 INSAIWorkSpace 演进，以全局规则、可复用 Skill、代码定位地图与知识库组成 Agent 协作控制面；将真实踩坑沉淀为强制加载约束，降低 Agent 在高风险模块中的错误修改。</li>
+                <li><b class="bt">MR review Skills：</b>参与演进 MR 自动评审 Skill：语义判断交给 Agent、格式与确定性校验交给脚本，结论必须携带规则依据与证据行号，证据不足降级为“疑似”；已成为新多轨项目 MR approve 门禁。</li>
+              </ul>
+            </div>
+
+            <div class="project-block" style="margin-bottom: 0;">
+              <div class="row-between end">
+                <h3 class="project-title">新多轨剪辑 · KMP 跨端与播放器 Seek 调优</h3>
+                <span class="project-side">主导开发 · 已合入稳定分支</span>
+              </div>
+              <ul class="compact-list">
+                <li><b class="bt">跨端交付：</b>主导运动模糊、轨迹延时、HDR 及 player 模块 KMP/CMP 重构，将业务编排与 UI 收敛至 Kotlin <code>commonMain</code>，双端真机全量通过并合入；<b class="bt">Seek 调优：</b>按快速/精确 Seek 分层、最新请求优先丢弃过期任务并引入 CrossFade，拖动延迟从约 <b>400ms 降至约 20ms</b>，同时消除音频 Pop 音。</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="section-compact open-source-section">
+            <div class="section-header">
+              <svg class="section-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-code"></use></svg>
+              <h2>开源贡献<img class="brand-logo header-logo square" src="assets/whisperkit-argmax-black@120.png" alt="Argmax WhisperKit" /></h2>
+            </div>
+            <div class="row-between end">
+              <h3 class="project-title">WhisperKit · Apple 端侧语音识别框架（<strong style="color: var(--accent);">ICML 2025 · GitHub 6.3k+ stars</strong>）</h3>
+              <span class="project-side">PR 链接：<svg class="gh-icon" viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-github"></use></svg><a class="resume-link" href="https://github.com/argmaxinc/argmax-oss-swift/pull/511">PR #511</a> · 已合入</span>
+            </div>
+            <ul class="compact-list">
+              <li><b class="bt">缺陷定位：</b>开发开源口播剪辑工具 AirTrim 时发现中文词级时间戳异常，沿源码定位到 <code>NLLanguageRecognizer</code> 返回 <b>BCP-47 标签</b>，而分词逻辑按 <b>ISO 639-1 白名单</b>判断，导致中文误入逐 Token 映射路径。</li>
+              <li><b class="bt">修复合入：</b>一天内独立完成问题定位、<code>Locale</code> 语言代码归一化及简繁中文回归测试；PR 经维护者评审后 <b>3 天合入</b>，并作为贡献者进入 v1.1.0 Release。源仓库：<svg class="gh-icon" viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-github"></use></svg><a class="resume-link" href="https://github.com/argmaxinc/argmax-oss-swift">github.com/argmaxinc/argmax-oss-swift</a></li>
+            </ul>
+          </section>
+
+          <section>
+            <div class="section-header">
+              <svg class="section-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-briefcase"></use></svg>
+              <h2>项目经历<img class="brand-logo header-logo elsepage" src="assets/elsepage-logo@120.png" alt="Elsepage" /></h2>
+            </div>
+
+            <div class="project-block" style="margin-bottom: 4px;">
+              <div class="row-between end">
+                <h3 class="project-title">
+                  页外 ElsePage · Reading Agent &amp; Personal Knowledge System
+                </h3>
+                <span class="project-side">Swift / iOS · Agent Runtime · 独立开发</span>
+              </div>
+              <p class="project-summary">面向传统阅读器难以沉淀长期思考、通用 Chatbot 缺少真实阅读上下文的问题，独立开发 <b>local-first Reading Agent</b>，将书籍原文、阅读位置、批注、历史 Reflection 与长期 Memory 组织为可检索、可追溯、可持续演化的 Agent Context，形成 <b>Read → Reflect → Discuss → Remember → Reconnect</b> 产品闭环；工程包含 13 个模块，356 个自动化测试全绿。</p>
+              <ul class="compact-list">
+                <li><b class="bt">Context Engineering：</b>针对固定 Prompt 难以判断本轮需要哪些 Context、而让 LLM 自由检索又难以约束数据范围与成本的问题，设计 <b>Semantic Planning → Validation → Policy Compilation → Context Assembly</b> 分层链路；LLM 负责判断<b>用户意图、Query 与检索范围</b>，确定性代码统一裁决<b>数据可用性、Retrieval Strategy、Context Budget 与回复策略</b>，并提供<b>规则化 Fallback</b>，使上下文选择<b>可测试、可审计、失败可降级</b>。</li>
+                <li><b class="bt">Hybrid RAG：</b>针对整本 EPUB 无法直接放入 Context Window、普通 Top-K 又可能召回未读章节的问题，从零实现 <b>Parent/Child Chunking → BM25 + Vector Retrieval → RRF → Cross-encoder Rerank → Small-to-Big Expansion</b>；以小粒度 Chunk 负责精准召回、大粒度 Chunk 补足上下文，并在检索与扩展阶段持续校验<b> read-so-far 边界</b>，实现跨章节语义召回的同时从<b>检索层</b>阻断未读内容。</li>
+                <li><b class="bt">Long-term Memory：</b>针对用户的反思、疑问与观点长期散落、普通 Conversation Memory 又容易退化为不可解释的摘要的问题，设计 <b>Thought / Question / Memory</b> 三类长期记忆，并为其建立 <b>Evidence、Relation 与 Revision</b>；每次反思后由 LLM 提出更新建议，再经过规则校验后写入，并保留观点演化的历史版本，使 Agent 的长期记忆具备证据来源、修订能力与持续演化能力。</li>
+                <li><b class="bt">Agent 可靠性与可观测性：</b>针对移动端模型调用可能出现超时、取消、输出截断、Provider 异常和重试重复等问题，自研有界 Agent Runtime，通过<b>调用次数、执行时间、输出长度三重预算及幂等机制</b>控制模型调用；同时建立 <b>Evidence → Generation → Citation → Local Validation</b> 可信链路，并记录 Context Routing、检索、预算、Fallback 与长期记忆更新等关键过程，使 Agent 行为可恢复、可追踪、可定位问题。<svg class="gh-icon" viewBox="0 0 16 16" aria-hidden="true"><use href="#icon-github"></use></svg><a class="resume-link" href="https://github.com/freecodetiger/Elsepage">GitHub 源码</a></li>
+            </div>
+          </section>
+
+          <section>
+            <div class="section-header">
+              <svg class="section-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-trophy"></use></svg>
+              <h2>荣誉奖项 &amp; 综合素质</h2>
+            </div>
+            <p class="course-text"><strong>荣誉奖项：</strong>大创省级项目负责人 · 腾讯游戏训练营 2025 结营 · 蓝桥杯程序设计 A组 (C++) 省二等奖 · 全国大学生计算机设计大赛中南地区二等奖 · 全国大学生数学竞赛省二等奖 · HarmonyOS 开发者认证 · 武汉大学优秀志愿者　<strong>跨界特长：</strong>视觉中国签约摄影师；独立运营抖音技术教学与个人成长账号，真人出镜，积累 <b>2000+ 粉丝</b>（<a class="resume-link" href="https://v.douyin.com/9jjKiO_NLTg/"><svg class="gh-icon dy-icon" viewBox="0 0 448 512" aria-hidden="true"><use href="#icon-douyin"></use></svg>代表作</a>），擅长技术内容表达与视觉呈现。</p>
+          </section>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const printBtn = document.getElementById("print-btn");
+      const pageShells = Array.from(document.querySelectorAll(".page-shell"));
+      const pagePxWidth = 210 * 3.7795275591;
+      const pagePxHeight = 297 * 3.7795275591;
+
+      function updateScale() {
+        for (const shell of pageShells) {
+          const availableWidth = shell.clientWidth;
+          const scale = Math.min(1, availableWidth / pagePxWidth);
+          shell.style.setProperty("--page-scale", String(scale));
+          shell.style.height = (pagePxHeight * scale) + "px";
+        }
+      }
+
+      printBtn.addEventListener("click", function () {
+        window.print();
+      });
+
+      window.addEventListener("resize", updateScale);
+      updateScale();
+    })();
+  </script>
+</body>
+</html>

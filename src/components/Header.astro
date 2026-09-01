@@ -1,102 +1,109 @@
 ---
 import { siteConfig } from "../config";
 
-const hasProjects = siteConfig.projects && siteConfig.projects.length > 0;
-const hasExperience = siteConfig.experience && siteConfig.experience.length > 0;
-const hasEducation = siteConfig.education && siteConfig.education.length > 0;
+interface Props {
+  homePath?: string;
+}
+
+const { homePath = "" } = Astro.props;
+const href = (hash: string) => `${homePath}${hash}`;
+const links = [
+  { label: "关于", href: href("#about") },
+  { label: "ElsePage", href: href("#elsepage") },
+  { label: "Agent 实践", href: href("#agent-practice") },
+  { label: "项目", href: href("#projects") },
+  { label: "经历", href: href("#experience") },
+  { label: "摄影", href: href("#photography") },
+];
 ---
 
-<header
-  id="header"
-  class="fixed top-0 left-0 right-0 z-50 hidden md:block transition-all duration-300"
->
-  <nav class="max-w-7xl mx-auto px-8 py-4">
-    <ul class="flex items-center gap-8 justify-center">
+<header id="header" class="fixed inset-x-0 top-0 z-50 transition-all duration-300">
+  <nav class="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 md:px-8 md:py-4">
+    <a
+      href={homePath || "#hero"}
+      class="font-bold text-gray-900 md:hidden"
+      aria-label={`${siteConfig.name}首页`}
+    >
+      {siteConfig.name}
+    </a>
+
+    <ul class="hidden w-full items-center justify-center gap-7 lg:gap-8 md:flex">
+      {links.map((link) => (
+        <li>
+          <a href={link.href} class="font-medium text-gray-700 transition-colors hover:text-black">
+            {link.label}
+          </a>
+        </li>
+      ))}
       <li>
         <a
-          href="#about"
-          class="text-gray-700 hover:text-black transition-colors font-medium"
+          href={siteConfig.social.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="rounded-full border border-gray-300 bg-white/80 px-4 py-1.5 font-medium text-gray-800 transition-all hover:-translate-y-0.5 hover:border-gray-500"
         >
-          关于
+          GitHub
         </a>
       </li>
-      <li>
-        <a
-          href="#proghostty"
-          class="text-gray-700 hover:text-black transition-colors font-medium"
-        >
-          ProGhostty
-        </a>
-      </li>
-      {
-        hasProjects && (
-          <li>
-            <a
-              href="#projects"
-              class="text-gray-700 hover:text-black transition-colors font-medium"
-            >
-              项目
-            </a>
-          </li>
-        )
-      }
-      {
-        hasExperience && (
-          <li>
-            <a
-              href="#experience"
-              class="text-gray-700 hover:text-black transition-colors font-medium"
-            >
-              经历
-            </a>
-          </li>
-        )
-      }
-      <li>
-        <a
-          href="#opensource"
-          class="text-gray-700 hover:text-black transition-colors font-medium"
-        >
-          开源
-        </a>
-      </li>
-      <li>
-        <a
-          href="#photography"
-          class="text-gray-700 hover:text-black transition-colors font-medium"
-        >
-          摄影
-        </a>
-      </li>
-      {
-        hasEducation && (
-          <li>
-            <a
-              href="#education"
-              class="text-gray-700 hover:text-black transition-colors font-medium"
-            >
-              教育
-            </a>
-          </li>
-        )
-      }
     </ul>
+
+    <button
+      id="mobile-menu-button"
+      type="button"
+      class="inline-flex size-10 items-center justify-center rounded-full border border-gray-300 bg-white/90 text-gray-800 md:hidden"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      aria-label="打开导航菜单"
+    >
+      <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" />
+      </svg>
+    </button>
   </nav>
+
+  <div id="mobile-menu" class="mx-4 hidden rounded-2xl border border-gray-200 bg-white/95 p-3 shadow-xl backdrop-blur md:hidden">
+    <div class="grid grid-cols-2 gap-1">
+      {links.map((link) => (
+        <a href={link.href} class="rounded-xl px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100">
+          {link.label}
+        </a>
+      ))}
+      <a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer" class="rounded-xl px-4 py-3 text-sm font-semibold text-white" style={{ backgroundColor: siteConfig.accentColor }}>
+        GitHub 主页 ↗
+      </a>
+      <a href={`mailto:${siteConfig.social.email}`} class="rounded-xl px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100">
+        联系我
+      </a>
+    </div>
+  </div>
 </header>
 
 <script>
-  window.addEventListener("scroll", () => {
-    const header = document.getElementById("header");
-    if (window.scrollY > 100) {
-      header?.classList.add("bg-white/80", "backdrop-blur-sm");
-    } else {
-      header?.classList.remove("bg-white/80", "backdrop-blur-sm");
-    }
-  });
-</script>
+  const header = document.getElementById("header");
+  const button = document.getElementById("mobile-menu-button");
+  const menu = document.getElementById("mobile-menu");
 
-<style>
-  html {
-    scroll-behavior: smooth;
-  }
-</style>
+  const updateHeader = () => {
+    if (window.scrollY > 80) {
+      header?.classList.add("bg-white/85", "backdrop-blur-md", "border-b", "border-gray-200/70");
+    } else {
+      header?.classList.remove("bg-white/85", "backdrop-blur-md", "border-b", "border-gray-200/70");
+    }
+  };
+
+  button?.addEventListener("click", () => {
+    const isOpen = button.getAttribute("aria-expanded") === "true";
+    button.setAttribute("aria-expanded", String(!isOpen));
+    menu?.classList.toggle("hidden", isOpen);
+  });
+
+  menu?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      menu.classList.add("hidden");
+      button?.setAttribute("aria-expanded", "false");
+    });
+  });
+
+  window.addEventListener("scroll", updateHeader, { passive: true });
+  updateHeader();
+</script>

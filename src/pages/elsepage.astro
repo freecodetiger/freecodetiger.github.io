@@ -1,0 +1,198 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { siteConfig } from "../config";
+
+const project = siteConfig.elsepage;
+const accent = siteConfig.accentColor;
+const executionSteps = [
+  { name: "Reflection", detail: "先保存用户原话" },
+  { name: "Semantic Plan", detail: "模型提议意图与来源" },
+  { name: "Validate & Compile", detail: "代码裁决范围、策略与预算" },
+  { name: "Hybrid Retrieval", detail: "只检索 read-so-far 证据" },
+  { name: "Reader Agent", detail: "基于证据生成克制回应" },
+  { name: "Local Validation", detail: "复核引用资格与本地来源" },
+  { name: "Journal & Brain", detail: "回应入库，异步投影长期记忆" },
+];
+
+const capabilityDetails = [
+  {
+    title: "01 / Context Engineering",
+    intro: "把模型的语义判断与系统的执行权分开。",
+    bullets: [
+      "Planner 只输出窄化的结构化语义计划，不直接决定数值型检索参数。",
+      "Validator 检查来源可用性、空查询、连续追问和阅读边界。",
+      "Policy Compiler 统一分配检索策略、证据数量、Context Budget 与 Fallback。",
+    ],
+  },
+  {
+    title: "02 / Retrieval Engineering",
+    intro: "小粒度负责找准，大粒度负责让模型读懂。",
+    bullets: [
+      "Parent / Child Chunking：child 用于 FTS 与向量召回，parent / window 补全语境。",
+      "FTS5 + semantic cosine 经 RRF 融合，再按配置接入远程 cross-encoder reranker。",
+      "Small-to-Big 扩展过程中持续应用 read-so-far 边界，降低未读内容进入 Context 的风险。",
+    ],
+  },
+  {
+    title: "03 / Long-term Memory",
+    intro: "不把长期记忆退化成一段不可解释的摘要。",
+    bullets: [
+      "Thought、Question、Memory 三类强类型对象都可带 Evidence、Relation 与 Revision。",
+      "每次最多接受一个 mutation proposal，更新目标必须来自候选集合。",
+      "有相关候选时拒绝无谓新建；旧观点先进入 revision，再更新当前陈述。",
+    ],
+  },
+  {
+    title: "04 / Runtime & Reliability",
+    intro: "让每一次模型调用都有明确上限和可恢复路径。",
+    bullets: [
+      "Planner、Reader 与 Brain Projection 分别有时间和输出预算。",
+      "取消、幂等、Fallback 与 Trace 覆盖 Context、检索、生成、引用和记忆更新。",
+      "引用落库前复核 evidence ID、类型、本地 chunk、书籍归属与阅读边界。",
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="ElsePage Case Study - 张鹏程"
+  description="ElsePage Reading Agent 的产品设计、Context Engineering、Hybrid RAG、Long-term Memory 与可靠性边界。"
+  canonicalPath="/elsepage/"
+  homePath="/"
+>
+  <section class="relative overflow-hidden px-8 pb-20 pt-32 sm:px-12 md:px-16 md:pb-28 md:pt-40 lg:px-24">
+    <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)] bg-[size:64px_64px] opacity-45"></div>
+    <div class="absolute left-0 top-0 -z-10 h-full w-2/3 bg-gradient-to-r from-blue-50/90 to-transparent"></div>
+    <div class="mx-auto max-w-7xl">
+      <a href="/#elsepage" class="text-sm font-semibold text-gray-600 hover:text-gray-900">← 返回首页</a>
+      <div class="mt-10 grid gap-12 lg:grid-cols-12 lg:items-end">
+        <div class="lg:col-span-8">
+          <div class="flex items-center gap-4">
+            <img src="/elsepage/logo.png" alt="ElsePage Logo" class="size-16 rounded-2xl object-cover sm:size-20" />
+            <div>
+              <p class="text-xs font-bold tracking-[0.18em] text-blue-700">PRODUCT & ENGINEERING CASE STUDY</p>
+              <p class="mt-1 text-xs text-gray-500">Local-first orchestration · BYOK · iOS</p>
+            </div>
+          </div>
+          <h1 class="mt-8 text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl md:text-8xl">页外 <span class="text-gray-400">/</span> ElsePage</h1>
+          <p class="mt-6 max-w-4xl text-xl font-semibold leading-relaxed text-gray-700 sm:text-2xl">{project.tagline}</p>
+          <p class="mt-6 max-w-4xl text-base leading-relaxed text-gray-600 sm:text-lg">{project.summary}</p>
+        </div>
+        <div class="lg:col-span-4 lg:text-right">
+          <a href={project.repo} target="_blank" rel="noopener noreferrer" class="inline-flex rounded-lg px-5 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:shadow-lg" style={{ backgroundColor: accent }}>查看公开源码 ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-shell">
+    <div class="mx-auto max-w-7xl">
+      <div class="grid gap-8 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-4">
+          <p class="section-kicker">01 / PRODUCT THESIS</p>
+          <h2 class="section-title">让 AI 回应思考，<br />而不是替代思考</h2>
+          <div class="section-rule" style={{ backgroundColor: accent }}></div>
+        </div>
+        <div class="lg:col-span-8">
+          <p class="text-lg leading-relaxed text-gray-600 sm:text-xl md:text-2xl">传统阅读器保存页面，通用 Chatbot 等待问题。ElsePage 选择另一条路：用户先写下自己的 Reflection，Agent 再在已读原文、批注、历史反思与长期记忆中寻找增量连接。</p>
+          <div class="mt-10 grid grid-cols-5 gap-1 sm:gap-3">
+            {project.loop.map((step, index) => (
+              <div class="relative min-w-0">
+                <div class:list={["flex h-20 items-center justify-center rounded-xl border px-1 text-center text-[10px] font-bold sm:text-sm", index === 2 ? "border-blue-700 bg-blue-700 text-white" : "border-gray-300 bg-white text-gray-700"]}>{step}</div>
+                {index < project.loop.length - 1 && <span class="absolute -right-2 top-1/2 z-10 -translate-y-1/2 bg-white text-gray-400 sm:-right-3">→</span>}
+              </div>
+            ))}
+          </div>
+          <div class="mt-8 grid gap-4 sm:grid-cols-3">
+            <div class="rounded-2xl border border-gray-200 p-5"><p class="text-sm font-bold text-gray-900">User-first</p><p class="mt-2 text-xs leading-relaxed text-gray-500">Reflection 先本地保存；模型失败不会吞掉用户原话。</p></div>
+            <div class="rounded-2xl border border-gray-200 p-5"><p class="text-sm font-bold text-gray-900">Invitation-only</p><p class="mt-2 text-xs leading-relaxed text-gray-500">Agent 只在用户主动邀请时出现，不打断阅读。</p></div>
+            <div class="rounded-2xl border border-gray-200 p-5"><p class="text-sm font-bold text-gray-900">Traceable</p><p class="mt-2 text-xs leading-relaxed text-gray-500">回应与记忆都保留来源、关系或修订路径。</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-gray-950 px-8 py-20 text-white sm:px-12 md:px-16 md:py-28 lg:px-24">
+    <div class="mx-auto max-w-7xl">
+      <p class="text-xs font-bold tracking-[0.18em] text-blue-400">02 / DETERMINISTIC EXECUTION CHAIN</p>
+      <h2 class="mt-4 max-w-4xl text-3xl font-bold leading-tight sm:text-4xl md:text-6xl">模型提出语义意图，代码决定系统能做什么。</h2>
+      <div class="mt-12 grid gap-3 md:grid-cols-7">
+        {executionSteps.map((step, index) => (
+          <div class="relative rounded-2xl border border-gray-800 bg-gray-900 p-4">
+            <span class="font-mono text-xs text-gray-600">0{index + 1}</span>
+            <h3 class="mt-5 text-sm font-bold text-white">{step.name}</h3>
+            <p class="mt-2 text-xs leading-relaxed text-gray-400">{step.detail}</p>
+            {index < executionSteps.length - 1 && <span class="absolute -bottom-3 left-1/2 z-10 -translate-x-1/2 text-gray-600 md:-right-2.5 md:bottom-auto md:left-auto md:top-1/2 md:translate-x-0 md:-translate-y-1/2">→</span>}
+          </div>
+        ))}
+      </div>
+      <p class="mt-6 max-w-4xl text-sm leading-relaxed text-gray-400">正常回复路径包含 Planner 与 Reader 两次顺序调用；Planner 结构化输出失败时最多增加一次修复调用，回复保存后还可以异步触发 Brain Projection。</p>
+    </div>
+  </section>
+
+  <section class="section-shell">
+    <div class="mx-auto max-w-7xl">
+      <div class="grid gap-px overflow-hidden rounded-3xl border border-gray-200 bg-gray-200 md:grid-cols-2">
+        {capabilityDetails.map((capability) => (
+          <article class="bg-white p-7 sm:p-9">
+            <h2 class="text-xl font-bold text-gray-900 sm:text-2xl">{capability.title}</h2>
+            <p class="mt-4 text-sm font-semibold text-blue-700">{capability.intro}</p>
+            <ul class="mt-6 space-y-4">
+              {capability.bullets.map((bullet) => (
+                <li class="flex items-start gap-3 text-sm leading-relaxed text-gray-600"><span class="mt-2 size-1.5 shrink-0 rounded-full bg-blue-700"></span><span>{bullet}</span></li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-shell pt-0">
+    <div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-4">
+        <p class="section-kicker">03 / EVALUATION</p>
+        <h2 class="section-title">把“回复得好”变成可以回归的行为</h2>
+        <div class="section-rule" style={{ backgroundColor: accent }}></div>
+      </div>
+      <div class="lg:col-span-8">
+        <div class="rounded-3xl border border-gray-200 bg-gray-50 p-7 sm:p-10">
+          <div class="grid gap-4 sm:grid-cols-3">
+            <div><p class="text-3xl font-bold text-gray-900">10</p><p class="mt-1 text-xs text-gray-500">固定阅读场景</p></div>
+            <div><p class="text-3xl font-bold text-gray-900">11</p><p class="mt-1 text-xs text-gray-500">行为评估维度</p></div>
+            <div><p class="text-3xl font-bold text-gray-900">20.1 / 22</p><p class="mt-1 text-xs text-gray-500">Internal LLM-as-judge baseline</p></div>
+          </div>
+          <p class="mt-8 text-sm leading-relaxed text-gray-600">评测覆盖理解用户、书籍准确性、知识增量、连接质量、个性化、追问克制、恭维控制、用户自主和可追溯性，并作为回归阈值门禁。它使用仿写样本和固定检索证据，被评模型与 Judge 均为 deepseek-chat，因此只用于内部回归，不代表独立外部认证，也不衡量真实 RAG 召回质量。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-shell pt-0">
+    <div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-4">
+        <p class="section-kicker">04 / ENGINEERING BOUNDARIES</p>
+        <h2 class="section-title">它不声称什么</h2>
+        <div class="section-rule" style={{ backgroundColor: accent }}></div>
+      </div>
+      <div class="space-y-3 lg:col-span-8">
+        <div class="rounded-2xl border border-gray-200 bg-white p-6"><h3 class="text-sm font-bold text-gray-900">不是“全部离线推理”</h3><p class="mt-2 text-sm leading-relaxed text-gray-600">存储、编排和 lexical index 在本地；Chat、Embedding 与可选 Rerank 会向用户选择的 BYOK Provider 发送所需内容。</p></div>
+        <div class="rounded-2xl border border-gray-200 bg-white p-6"><h3 class="text-sm font-bold text-gray-900">不是自主 Multi-agent 平台</h3><p class="mt-2 text-sm leading-relaxed text-gray-600">它是由确定性策略编排四条 LLM 子流程的 agentic application，不让模型自由调用任意工具。</p></div>
+        <div class="rounded-2xl border border-gray-200 bg-white p-6"><h3 class="text-sm font-bold text-gray-900">引用校验不等于事实保证</h3><p class="mt-2 text-sm leading-relaxed text-gray-600">系统限制模型只能引用本轮证据，并在落库前复核来源资格；它不能证明生成句子一定忠实概括了证据。</p></div>
+        <div class="rounded-2xl border border-gray-200 bg-white p-6"><h3 class="text-sm font-bold text-gray-900">Read-so-far 是多层防线，不写“绝不剧透”</h3><p class="mt-2 text-sm leading-relaxed text-gray-600">检索、扩展与本地复核共同限制阅读边界，但边界元数据缺失等极端情况仍需持续测试。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="px-8 pb-24 pt-8 sm:px-12 md:px-16 md:pb-32 lg:px-24">
+    <div class="mx-auto flex max-w-7xl flex-col justify-between gap-8 rounded-3xl bg-blue-700 p-8 text-white sm:p-12 md:flex-row md:items-end">
+      <div>
+        <p class="text-xs font-bold tracking-[0.18em] text-blue-200">OPEN ENGINEERING ARTIFACT</p>
+        <h2 class="mt-4 max-w-3xl text-3xl font-bold sm:text-4xl">代码、架构说明与评测运行记录都在公开仓库中。</h2>
+        <p class="mt-4 max-w-2xl text-sm leading-relaxed text-blue-100">当前是 working product loop，无 App Store / TestFlight 或正式 Release；仓库尚未发布 License。</p>
+      </div>
+      <a href={project.repo} target="_blank" rel="noopener noreferrer" class="shrink-0 rounded-lg bg-white px-5 py-3 text-sm font-bold text-blue-700 transition-transform hover:-translate-y-0.5">查看 GitHub ↗</a>
+    </div>
+  </section>
+</BaseLayout>

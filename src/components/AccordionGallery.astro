@@ -44,6 +44,14 @@ const {
 
 const count = items.length;
 const initial = Math.min(Math.max(defaultIndex, 0), count - 1);
+const groups = Array.from(
+  items.reduce<Map<string, Item[]>>((result, item) => {
+    const group = result.get(item.label) || [];
+    group.push(item);
+    result.set(item.label, group);
+    return result;
+  }, new Map())
+);
 ---
 
 <div
@@ -91,6 +99,53 @@ const initial = Math.min(Math.max(defaultIndex, 0), count - 1);
       </Tag>
     );
   })}
+</div>
+
+<div
+  class="ag-mobile"
+  data-ag-mobile
+  style={`--ag-accent: ${accentColor}; --ag-overlay: ${overlayColor}; --ag-text: ${textColor}`}
+  aria-label="移动端摄影画廊"
+>
+  {
+    groups.map(([label, groupItems]) => (
+      <section class="ag-mobile-group" aria-labelledby={`ag-mobile-${label}`}>
+        <div class="ag-mobile-heading">
+          <h3 id={`ag-mobile-${label}`}>{label}</h3>
+          <span aria-hidden="true">{String(groupItems.length).padStart(2, "0")} 张</span>
+        </div>
+
+        <div class="ag-mobile-track" role="group" aria-label={`${label}作品`}>
+          {groupItems.map((item, index) => (
+            <button
+              class="ag-mobile-card"
+              type="button"
+              data-ag-open
+              data-image={item.image}
+              data-alt={item.alt || item.label}
+              data-caption={`${label} · ${String(index + 1).padStart(2, "0")}`}
+              aria-label={`查看${label}第 ${index + 1} 张大图`}
+              style={`border-radius: ${radius}px`}
+            >
+              <img src={item.image} alt={item.alt || item.label} draggable="false" loading="lazy" decoding="async" />
+              <span class="ag-mobile-shade"></span>
+              <span class="ag-mobile-index" aria-hidden="true">
+                {String(index + 1).padStart(2, "0")} / {String(groupItems.length).padStart(2, "0")}
+              </span>
+            </button>
+          ))}
+        </div>
+      </section>
+    ))
+  }
+
+  <dialog class="ag-dialog" data-ag-dialog aria-label="摄影作品大图">
+    <button class="ag-dialog-close" type="button" data-ag-close aria-label="关闭大图">×</button>
+    <figure>
+      <img data-ag-dialog-image alt="" />
+      <figcaption data-ag-dialog-caption></figcaption>
+    </figure>
+  </dialog>
 </div>
 
 <style>
@@ -196,27 +251,177 @@ const initial = Math.min(Math.max(defaultIndex, 0), count - 1);
     opacity: 0;
   }
 
+  .ag-mobile {
+    display: none;
+  }
+
+  .ag-dialog {
+    width: min(960px, calc(100vw - 24px));
+    max-width: none;
+    max-height: calc(100dvh - 24px);
+    margin: auto;
+    padding: 0;
+    overflow: visible;
+    border: 0;
+    background: transparent;
+  }
+
+  .ag-dialog::backdrop {
+    background: rgba(7, 6, 12, 0.88);
+    backdrop-filter: blur(10px);
+  }
+
+  .ag-dialog figure {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 18px;
+    background: #090711;
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5);
+  }
+
+  .ag-dialog img {
+    display: block;
+    width: 100%;
+    max-height: calc(100dvh - 72px);
+    object-fit: contain;
+  }
+
+  .ag-dialog figcaption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 36px 18px 16px;
+    color: white;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    background: linear-gradient(transparent, rgba(7, 6, 12, 0.86));
+  }
+
+  .ag-dialog-close {
+    position: absolute;
+    z-index: 2;
+    top: 12px;
+    right: 12px;
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 999px;
+    color: white;
+    font-size: 1.65rem;
+    line-height: 1;
+    background: rgba(7, 6, 12, 0.7);
+    backdrop-filter: blur(8px);
+    cursor: pointer;
+  }
+
+  .ag-dialog-close:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
+  }
+
   @media (max-width: 520px) {
     .ag-root {
-      flex-direction: column;
-      height: auto !important;
-      perspective: none;
+      display: none;
     }
 
-    .ag-panel {
-      flex: none;
-      height: 120px;
-      transform: none;
+    .ag-mobile {
+      display: grid;
+      gap: 26px;
     }
 
-    .ag-media {
+    .ag-mobile-group {
+      min-width: 0;
+    }
+
+    .ag-mobile-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .ag-mobile-heading h3 {
+      margin: 0;
+      color: #111827;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .ag-mobile-heading span {
+      color: #9ca3af;
+      font-size: 0.72rem;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.08em;
+    }
+
+    .ag-mobile-track {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      overscroll-behavior-inline: contain;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .ag-mobile-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ag-mobile-card {
+      position: relative;
+      flex: 0 0 82%;
+      aspect-ratio: 4 / 3;
+      padding: 0;
+      overflow: hidden;
+      scroll-snap-align: start;
+      border: 0;
+      color: white;
+      background: #0a0713;
+      box-shadow: 0 14px 32px -22px rgba(0, 0, 0, 0.9);
+      cursor: zoom-in;
+    }
+
+    .ag-mobile-card img {
+      display: block;
       width: 100%;
       height: 100%;
+      object-fit: cover;
+      transition: transform 240ms ease;
+      user-select: none;
+      -webkit-user-drag: none;
     }
 
-    .ag-bar,
-    .ag-text {
-      opacity: 1;
+    .ag-mobile-card:active img {
+      transform: scale(0.985);
+    }
+
+    .ag-mobile-card:focus-visible {
+      outline: 2px solid var(--ag-accent);
+      outline-offset: -4px;
+    }
+
+    .ag-mobile-shade {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent 58%, rgba(7, 6, 12, 0.66));
+    }
+
+    .ag-mobile-index {
+      position: absolute;
+      right: 14px;
+      bottom: 12px;
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 0.68rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.12em;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
     }
   }
 </style>
@@ -224,11 +429,11 @@ const initial = Math.min(Math.max(defaultIndex, 0), count - 1);
 <script>
   import { gsap } from "gsap";
 
-  document.querySelectorAll("[data-ag]").forEach((root) => {
-    const panels = Array.from(root.querySelectorAll("[data-panel]"));
-    const mediaEls = panels.map((p) => p.querySelector("[data-media]"));
-    const bars = panels.map((p) => p.querySelector("[data-bar]"));
-    const texts = panels.map((p) => p.querySelector("[data-text]"));
+  document.querySelectorAll<HTMLElement>("[data-ag]").forEach((root) => {
+    const panels = Array.from(root.querySelectorAll<HTMLElement>("[data-panel]"));
+    const mediaEls = panels.map((p) => p.querySelector<HTMLElement>("[data-media]"));
+    const bars = panels.map((p) => p.querySelector<HTMLElement>("[data-bar]"));
+    const texts = panels.map((p) => p.querySelector<HTMLElement>("[data-text]"));
     const count = panels.length;
     if (!count) return;
 
@@ -243,18 +448,18 @@ const initial = Math.min(Math.max(defaultIndex, 0), count - 1);
     const gap = parseFloat(getComputedStyle(root).gap || "10");
 
     let active = parseInt(root.dataset.active || "0", 10);
-    let tl = null;
+    let tl: ReturnType<typeof gsap.timeline> | null = null;
     let mediaSize = 320;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    function setActive(i) {
+    function setActive(i: number) {
       active = i;
       root.dataset.active = String(i);
       panels.forEach((p, idx) => p.setAttribute("aria-current", idx === i ? "true" : "false"));
       applyLayout(true);
     }
 
-    function applyLayout(animate) {
+    function applyLayout(animate: boolean) {
       tl && tl.kill();
       const dur = animate && !reduced ? duration : 0;
 
@@ -276,18 +481,19 @@ const initial = Math.min(Math.max(defaultIndex, 0), count - 1);
 
       const r = Math.min(Math.max(expandRatio, 0.2), 0.9);
       const grow = count > 1 ? (r * (count - 1)) / (1 - r) : 1;
-      tl = gsap.timeline();
+      const nextTimeline = gsap.timeline();
+      tl = nextTimeline;
 
       panels.forEach((panel, i) => {
         const isActive = i === active;
         const rot = isActive ? 0 : i < active ? -tilt : tilt;
-        tl.to(panel, { flexGrow: isActive ? grow : 1, rotateY: rot, duration: dur, ease }, 0);
+        nextTimeline.to(panel, { flexGrow: isActive ? grow : 1, rotateY: rot, duration: dur, ease }, 0);
 
         const media = mediaEls[i];
         if (media) {
           const drift = Math.max(-1.5, Math.min(1.5, active - i));
           const shift = drift * parallax * mediaSize * 0.06;
-          tl.to(
+          nextTimeline.to(
             media,
             {
               xPercent: -50,
@@ -305,9 +511,9 @@ const initial = Math.min(Math.max(defaultIndex, 0), count - 1);
 
         if (showLabels && bars[i] && texts[i]) {
           if (isActive) {
-            tl.to([bars[i], texts[i]], { opacity: 1, x: 0, duration: dur, ease, stagger: reduced ? 0 : stagger }, 0);
+            nextTimeline.to([bars[i], texts[i]], { opacity: 1, x: 0, duration: dur, ease, stagger: reduced ? 0 : stagger }, 0);
           } else {
-            tl.to([bars[i], texts[i]], { opacity: 0, x: -14, duration: dur * 0.6, ease }, 0);
+            nextTimeline.to([bars[i], texts[i]], { opacity: 0, x: -14, duration: dur * 0.6, ease }, 0);
           }
         }
       });
@@ -346,5 +552,27 @@ const initial = Math.min(Math.max(defaultIndex, 0), count - 1);
 
     // 初始动画一次（跳过首帧测量时的静默布局）
     requestAnimationFrame(() => applyLayout(true));
+  });
+
+  document.querySelectorAll<HTMLElement>("[data-ag-mobile]").forEach((root) => {
+    const dialog = root.querySelector<HTMLDialogElement>("[data-ag-dialog]");
+    const dialogImage = root.querySelector<HTMLImageElement>("[data-ag-dialog-image]");
+    const dialogCaption = root.querySelector<HTMLElement>("[data-ag-dialog-caption]");
+    const closeButton = root.querySelector<HTMLButtonElement>("[data-ag-close]");
+    if (!dialog || !dialogImage || !dialogCaption || !closeButton) return;
+
+    root.querySelectorAll<HTMLButtonElement>("[data-ag-open]").forEach((card) => {
+      card.addEventListener("click", () => {
+        dialogImage.src = card.dataset.image || "";
+        dialogImage.alt = card.dataset.alt || "摄影作品";
+        dialogCaption.textContent = card.dataset.caption || "";
+        dialog.showModal();
+      });
+    });
+
+    closeButton.addEventListener("click", () => dialog.close());
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
   });
 </script>
