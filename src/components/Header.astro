@@ -17,7 +17,7 @@ const links = [
 ];
 ---
 
-<header id="header" class="fixed inset-x-0 top-0 z-50 transition-all duration-300">
+<header class="absolute inset-x-0 top-0 z-50">
   <nav class="mx-auto flex max-w-7xl items-center justify-between px-5 py-3 md:px-8 md:py-4">
     <a
       href={homePath || "#hero"}
@@ -79,17 +79,8 @@ const links = [
 </header>
 
 <script>
-  const header = document.getElementById("header");
   const button = document.getElementById("mobile-menu-button");
   const menu = document.getElementById("mobile-menu");
-
-  const updateHeader = () => {
-    if (window.scrollY > 80) {
-      header?.classList.add("bg-white/85", "backdrop-blur-md", "border-b", "border-gray-200/70");
-    } else {
-      header?.classList.remove("bg-white/85", "backdrop-blur-md", "border-b", "border-gray-200/70");
-    }
-  };
 
   button?.addEventListener("click", () => {
     const isOpen = button.getAttribute("aria-expanded") === "true";
@@ -103,7 +94,4 @@ const links = [
       button?.setAttribute("aria-expanded", "false");
     });
   });
-
-  window.addEventListener("scroll", updateHeader, { passive: true });
-  updateHeader();
 </script>
